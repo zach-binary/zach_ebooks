@@ -1,6 +1,7 @@
 (ns zach-ebooks.core
   (:gen-class)
   (:require [zach-ebooks.tasks :as tasks]
+  			[zach-ebooks.phrases :as phrases]
   			[clj-time.core :as t]
   			[clj-time.periodic :refer [periodic-seq]]
   			[chime :refer [chime-at]]))

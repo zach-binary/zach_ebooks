@@ -1,19 +1,7 @@
-(ns zach-ebooks.phrases)
+(ns zach-ebooks.phrases
+	(:require [zach-ebooks.corpus :as corpus]))
 
-(def test-phrase "We will focus on the technique mostly used with 3D fighters like Virtua Fighter. It is following a certain pattern of high/low blocking that will effectively block a large part of the high/low mix-ups that you have to deal with in a match. This concept is not unique to 3D fighters, and it is also found in 2D fighters. It plays an important role in the King of Fighters because it forces the player to react to high-speed mix-ups more frequently than most other 2D fighters.")
-
-(def phrase-length 10)
-
-(defn gen-corpus
-	"Generates a corpus of data needed to start a markov chain.
-	 - accepts a text string"
-	[text]
-	(->> (clojure.string/split text #"\s") 
-		(partition 2 1)
-		(reduce (fn [acc [w next-w]]
-			(update-in acc [w next-w] 
-				(fnil inc 0)))
-			{})))
+(def phrase-length 20)
 
 (defn wrand
 	"given a vector of slice sizes, returns the index of a slice given a                                                                                                                                      
@@ -27,27 +15,30 @@
 	        i
 	        (recur (inc i) (+ (slices i) sum))))))
 
+(defn add-text
+	[text]
+	(corpus/add-to-corpus text))
+
 (defn start-chain
-	[data]
-	(let [total (count data)
+	[corpus]
+	(let [total (count corpus)
 		  	r (rand total)]
-		 (nth (keys data) r)))
+		 (nth (keys corpus) r)))
 
 (defn get-next-word
-	[data word]
-	(let [data-entry (get data word)
-			v (vec (vals data-entry))
-			next-words (vec (keys data-entry))]
+	[corpus word]
+	(let [corpus-entry (get corpus word)
+			v (vec (vals corpus-entry))
+			next-words (vec (keys corpus-entry))]
 			(->> (wrand v)
 				(nth next-words))))
 
-(defn test-markov
+(defn gen-sentence
 	[]
-	(let [data (gen-corpus test-phrase)
-			start (start-chain data)]
-		(loop [phrase [] word (start-chain data) n 0]
+	(let [corpus (deref corpus/data)]
+		(loop [phrase [] word (start-chain corpus) n 0]
 			(if (> n phrase-length)
 				(clojure.string/join " " phrase)
-			(let [next-word (get-next-word data word)]
+			(let [next-word (get-next-word corpus word)]
 				(recur (conj phrase next-word) next-word (inc n)))))))
 	
