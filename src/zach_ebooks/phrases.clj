@@ -17,7 +17,7 @@
 
 (defn add-text
 	[text]
-	(corpus/add-to-corpus text))
+	(corpus/learn-text text))
 
 (defn start-chain
 	[corpus]

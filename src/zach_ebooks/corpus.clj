@@ -15,8 +15,16 @@
 				(fnil inc 0)))
 			@data)))
 
-(defn add-text
+(defn learn-text
 	[text]
 	(reset! data (add-to-corpus text)))
 
-(add-text test-phrase)
+(defn persist-data
+	[]
+	(spit "data" @data))
+
+(defn load-data
+	[]
+	(reset! data (load-string (slurp "data"))))
+
+(load-data)
