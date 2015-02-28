@@ -1,24 +1,15 @@
 (ns zach-ebooks.core
   (:gen-class)
   (:require [zach-ebooks.tasks :as tasks]
-  			[zach-ebooks.phrases :as phrases]
-  			[clj-time.core :as t]
-  			[clj-time.periodic :refer [periodic-seq]]
-  			[chime :refer [chime-at]]))
-
-(def schedule (periodic-seq (t/now)
-							(-> 10 t/seconds)))
-
-(defn run-task
-	"Runs every 10 seconds"
-	[time]
-	(println "Chiming at" time))
+  			[zach-ebooks.phrases :as phrases]))
 
 (defn -main
 	"Entry point I suppose.."
 	[& args]
 	(println "Starting Bot")
-	(chime-at schedule run-task))
+	(->> (phrases/gen-sentence)
+		(tasks/update-status)
+		(println)))
 
 
 
