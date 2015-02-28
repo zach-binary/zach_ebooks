@@ -20,6 +20,19 @@
 	[text]
 	(reset! data (add-to-corpus text)))
 
+(defn learn-file
+	[fileptr]
+	(if (.isDirectory fileptr)
+		(println "Skipping Directory" (.getPath fileptr))
+	(reset! data (add-to-corpus 
+		(slurp (.getPath fileptr))))))
+
+(defn learn-files
+	[dirpath]
+	(let [directory (file dirpath)
+			files (file-seq directory)]
+		(map learn-file files)))
+
 (defn persist-data
 	[]
 	(spit "data" @data))
