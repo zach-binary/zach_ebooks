@@ -9,8 +9,8 @@
 
 (def my-creds (make-oauth-creds config/consumerKey
 								config/consumerSecret
-								config/userToken
-								config/userTokenSecret))
+								config/accessToken
+								config/accessTokenSecret))
 
 
 (defn fit-to-tweet
