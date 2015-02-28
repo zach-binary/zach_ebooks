@@ -9,8 +9,8 @@ to run, add `config.clj` to `src/zach_ebooks` and make it look like this:
 
 (def consumerKey "")
 (def consumerSecret "")
-(def userToken "")
-(def userTokenSecret "")
+(def accessToken "")
+(def accessTokenSecret "")
 ```
 
 

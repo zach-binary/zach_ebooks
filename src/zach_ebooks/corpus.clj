@@ -1,4 +1,5 @@
-(ns zach-ebooks.corpus)
+(ns zach-ebooks.corpus
+	(:use [clojure.java.io]))
 
 (def data (atom {}))
 
@@ -27,4 +28,7 @@
 	[]
 	(reset! data (load-string (slurp "data"))))
 
-(load-data)
+(if (.exists (as-file "data"))
+	(load-data)
+	(->> (learn-text test-phrase)
+		(spit "data")))
