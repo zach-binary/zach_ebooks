@@ -31,7 +31,9 @@
 	[dirpath]
 	(let [directory (file dirpath)
 			files (file-seq directory)]
-		(map learn-file files)))
+		(map learn-file files))
+
+	"Complete") ; adding here so all the data doesn't get dumped to the repl
 
 (defn persist-data
 	[]
@@ -39,7 +41,7 @@
 
 (defn load-data
 	[]
-	(reset! data (load-string (slurp "data"))))
+	(reset! data (read-string (slurp "data"))))
 
 (if (.exists (as-file "data"))
 	(load-data)
